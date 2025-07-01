@@ -46,7 +46,7 @@ export interface DashboardStats {
 export interface CreateTicketData {
   subject: string;
   description: string;
-  departments: Department[];
+  department: Department;
   priority: TicketPriority;
   category?: string;
   subcategory?: string;
@@ -55,7 +55,7 @@ export interface CreateTicketData {
 export interface UpdateTicketData {
   subject?: string;
   description?: string;
-  departments?: Department[];
+  department?: Department;
   priority?: TicketPriority;
   status?: TicketStatus;
   category?: string;

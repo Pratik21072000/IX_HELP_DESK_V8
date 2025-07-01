@@ -89,11 +89,12 @@ export async function POST(request: NextRequest) {
     // All authenticated users can create tickets
 
     const data: CreateTicketData = await request.json();
+    console.log(data);
 
     if (
       !data.subject ||
       !data.description ||
-      data.departments.length === 0 ||
+      !data.department ||
       !data.priority
     ) {
       return NextResponse.json(
@@ -119,37 +120,38 @@ export async function POST(request: NextRequest) {
     const createdTickets = [];
 
     let ticket: any;
-    for (const department of data.departments) {
-      const fullSubject =
-        data.departments.length > 1
-          ? `[${department}] ${baseSubject}`
-          : baseSubject;
 
-      ticket = await prisma.ticket.create({
-        data: {
-          subject: fullSubject,
-          description: data.description.trim(),
-          department: department,
-          priority: data.priority,
-          category: data.category,
-          subcategory: data.subcategory,
-          createdBy: user.id,
-        },
-        include: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              username: true,
-              role: true,
-              department: true,
-            },
+    ticket = await prisma.ticket.create({
+      data: {
+        subject: baseSubject,
+        description: data.description.trim(),
+        department: data.department,
+        priority: data.priority,
+        category: data.category,
+        subcategory: data.subcategory,
+        createdBy: user.id,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            role: true,
+            department: true,
           },
         },
-      });
+      },
+    });
 
-      createdTickets.push(ticket);
-    }
+    createdTickets.push(ticket);
+    // for (const department of data.departments) {
+    //   const fullSubject =
+    //     data.departments.length > 1
+    //       ? `[${department}] ${baseSubject}`
+    //       : baseSubject;
+
+    // }
 
     // Send email notification to the department
     try {
