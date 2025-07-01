@@ -304,6 +304,7 @@ export async function sendTicketUpdateEmail(
   comment?: string,
 ): Promise<void> {
   try {
+    console.log("ticket", ticket);
     const fromEmail = process.env.SES_FROM_EMAIL || "noreply@company.com";
 
     // Send notification to ticket creator
