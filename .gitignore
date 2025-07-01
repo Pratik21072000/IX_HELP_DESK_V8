@@ -32,6 +32,7 @@ out/
 .cache/
 
 # Env and secrets
+env
 .env
 .env.*
 *.pem
