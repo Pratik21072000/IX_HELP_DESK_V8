@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
     if (
       !data.subject ||
       !data.description ||
-      !data.department ||
+      data.departments.length === 0 ||
       !data.priority
     ) {
       return NextResponse.json(
@@ -110,33 +110,46 @@ export async function POST(request: NextRequest) {
       .replace(/\s+/g, " ") // Replace multiple spaces with single space
       .trim();
 
-    const fullSubject =
+    const baseSubject =
       data.category && data.subcategory
         ? `[${data.category} - ${data.subcategory}] ${cleanSubject}`
         : cleanSubject;
 
-    const ticket: any = await prisma.ticket.create({
-      data: {
-        subject: fullSubject,
-        description: data.description.trim(),
-        department: data.department,
-        priority: data.priority,
-        category: data.category,
-        subcategory: data.subcategory,
-        createdBy: user.id,
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-            role: true,
-            department: true,
+    // Create tickets for each selected department
+    const createdTickets = [];
+
+    let ticket: any;
+    for (const department of data.departments) {
+      const fullSubject =
+        data.departments.length > 1
+          ? `[${department}] ${baseSubject}`
+          : baseSubject;
+
+      ticket = await prisma.ticket.create({
+        data: {
+          subject: fullSubject,
+          description: data.description.trim(),
+          department: department,
+          priority: data.priority,
+          category: data.category,
+          subcategory: data.subcategory,
+          createdBy: user.id,
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              username: true,
+              role: true,
+              department: true,
+            },
           },
         },
-      },
-    });
+      });
+
+      createdTickets.push(ticket);
+    }
 
     // Send email notification to the department
     try {

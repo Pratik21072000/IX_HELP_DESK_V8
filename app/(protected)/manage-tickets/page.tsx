@@ -95,11 +95,11 @@ const ManageTicketsPage: React.FC = () => {
   const applyFilters = () => {
     let filtered = [...tickets];
 
-    if (filters.department) {
-      filtered = filtered.filter(
-        (ticket) => ticket.department === filters.department,
-      );
-    }
+    // if (filters.department) {
+    //   filtered = filtered.filter(
+    //     (ticket) => ticket.department === filters.department,
+    //   );
+    // }
     if (filters.priority) {
       filtered = filtered.filter(
         (ticket) => ticket.priority === filters.priority,
@@ -442,6 +442,7 @@ const ManageTicketsPage: React.FC = () => {
 
       {/* Edit Modal */}
       <EditTicketModal
+        myTickets={false}
         ticket={editingTicket}
         open={!!editingTicket}
         onClose={() => setEditingTicket(null)}

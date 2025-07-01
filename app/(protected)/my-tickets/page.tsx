@@ -73,11 +73,11 @@ const MyTicketsPage: React.FC = () => {
   const applyFilters = () => {
     let filtered = [...tickets];
 
-    if (filters.department) {
-      filtered = filtered.filter(
-        (ticket) => ticket.department === filters.department,
-      );
-    }
+    // if (filters.department) {
+    //   filtered = filtered.filter(
+    //     (ticket) => ticket.department === filters.department,
+    //   );
+    // }
     if (filters.priority) {
       filtered = filtered.filter(
         (ticket) => ticket.priority === filters.priority,
