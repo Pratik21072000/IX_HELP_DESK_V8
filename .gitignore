@@ -25,3 +25,36 @@ prisma/dev.db
 *.njsproj
 *.sln
 *.sw?
+
+# Next.js build output
+.next/
+out/
+.cache/
+
+# Env and secrets
+.env
+.env.*
+*.pem
+*.key
+*.crt
+
+# Build outputs
+build/
+dist/
+*.pack
+
+# Lint & TypeScript
+.eslintcache
+tsconfig.tsbuildinfo
+
+# Git LFS & large files
+*.pack
+
+# Ignore coverage/test reports
+coverage/
+*.lcov
+
+# Ignore uploads/temp files
+tmp/
+temp/
+uploads/
