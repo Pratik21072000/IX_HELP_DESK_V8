@@ -1,9 +1,14 @@
 {
   "pages": {
-    "/page": [
+    "/(protected)/my-tickets/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/chunks/app/(protected)/my-tickets/page.js"
+    ],
+    "/(protected)/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(protected)/layout.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -11,20 +16,25 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
+    "/login/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/login/page.js"
+    ],
     "/(protected)/dashboard/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(protected)/dashboard/page.js"
     ],
-    "/(protected)/layout": [
+    "/(protected)/profile/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(protected)/layout.js"
+      "static/chunks/app/(protected)/profile/page.js"
     ],
-    "/login/page": [
+    "/(protected)/create-ticket/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/login/page.js"
+      "static/chunks/app/(protected)/create-ticket/page.js"
     ]
   }
 }

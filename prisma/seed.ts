@@ -15,7 +15,7 @@ async function main() {
     create: {
       username: "pratikka@incubxperts.com",
       password: hashedPassword,
-      name: "John Employee",
+      name: "Pratik Kavate",
       role: "EMPLOYEE",
     },
   });
@@ -26,7 +26,7 @@ async function main() {
     create: {
       username: "pratikka@incubxperts.com",
       password: hashedPassword,
-      name: "Jane Employee",
+      name: "Pratik Kavate",
       role: "EMPLOYEE",
     },
   });
@@ -37,7 +37,7 @@ async function main() {
     create: {
       username: "harikaa@incubxperts.com",
       password: hashedPassword,
-      name: "Admin Manager",
+      name: "Harika Admin",
       role: "ADMIN",
       department: "ADMIN",
     },
@@ -49,7 +49,7 @@ async function main() {
     create: {
       username: "vrushalim@incubxperts.com",
       password: hashedPassword,
-      name: "Finance Manager",
+      name: "Vrushali Finance",
       role: "FINANCE",
       department: "FINANCE",
     },

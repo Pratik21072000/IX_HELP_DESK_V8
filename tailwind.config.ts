@@ -89,9 +89,9 @@ export default {
         },
       },
       fontFamily: {
-        heading: ["Poppins", "Arial", "sans-serif"],
-        body: ["Roboto", "Helvetica", "Arial", "sans-serif"],
-        sans: ["Roboto", "Helvetica", "Arial", "sans-serif"],
+        sans: ["Poppins", "sans-serif"],
+        heading: ["Poppins", "sans-serif"],
+        body: ["Poppins", "sans-serif"],
         poppins: ["Poppins", "sans-serif"],
       },
       fontSize: {
