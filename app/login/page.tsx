@@ -16,6 +16,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Ticket, User, Shield } from "lucide-react";
 import Image from "next/image";
+import WelcomeLogo from "../../assets/images/Screenshot 2025-07-02 113416.png";
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -66,7 +67,7 @@ const LoginPage: React.FC = () => {
           <div className="flex justify-center">
             <div className=" p-4 rounded-2xl shadow-lg">
               <Image
-                src="/favicon.ico"
+                src={WelcomeLogo}
                 height={40}
                 width={130}
                 alt="HelpDesk System Logo"

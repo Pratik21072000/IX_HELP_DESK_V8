@@ -258,7 +258,6 @@ export async function sendTicketCreatedEmail(
       Source: fromEmail,
       Destination: {
         ToAddresses: [departmentEmail],
-        // Optional: CC other relevant people
         CcAddresses: process.env.CC_EMAILS
           ? process.env.CC_EMAILS.split(",")
           : [],
@@ -339,6 +338,9 @@ View your ticket: ${process.env.NEXTAUTH_URL || "http://localhost:3000"}/my-tick
       Source: fromEmail,
       Destination: {
         ToAddresses: [ticket.user.username],
+        CcAddresses: process.env.CC_EMAILS
+          ? process.env.CC_EMAILS.split(",")
+          : [],
       },
       Message: {
         Subject: {

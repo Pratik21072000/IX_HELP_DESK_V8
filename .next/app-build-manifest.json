@@ -1,14 +1,9 @@
 {
   "pages": {
-    "/(protected)/create-ticket/page": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(protected)/create-ticket/page.js"
-    ],
-    "/(protected)/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(protected)/layout.js"
+      "static/chunks/app/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -21,10 +16,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(protected)/dashboard/page.js"
     ],
-    "/(protected)/my-tickets/page": [
+    "/(protected)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(protected)/my-tickets/page.js"
+      "static/chunks/app/(protected)/layout.js"
+    ],
+    "/login/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/login/page.js"
     ]
   }
 }
