@@ -258,7 +258,6 @@ export async function sendTicketCreatedEmail(
       Source: fromEmail,
       Destination: {
         ToAddresses: [departmentEmail],
-        // Optional: CC other relevant people
         CcAddresses: process.env.CC_EMAILS
           ? process.env.CC_EMAILS.split(",")
           : [],
@@ -304,6 +303,7 @@ export async function sendTicketUpdateEmail(
   comment?: string,
 ): Promise<void> {
   try {
+    console.log("ticket", ticket);
     const fromEmail = process.env.SES_FROM_EMAIL || "noreply@company.com";
 
     // Send notification to ticket creator
@@ -338,6 +338,9 @@ View your ticket: ${process.env.NEXTAUTH_URL || "http://localhost:3000"}/my-tick
       Source: fromEmail,
       Destination: {
         ToAddresses: [ticket.user.username],
+        CcAddresses: process.env.CC_EMAILS
+          ? process.env.CC_EMAILS.split(",")
+          : [],
       },
       Message: {
         Subject: {
