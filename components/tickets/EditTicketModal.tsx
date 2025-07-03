@@ -304,6 +304,40 @@ export const EditTicketModal: React.FC<EditTicketModalProps> = ({
                 required
               />
             </div>
+
+            {/* Priority Selection */}
+            <div className="space-y-2">
+              <Label htmlFor="priority">
+                Priority <span className="text-red-500">*</span>
+              </Label>
+              <Select
+                value={formData.priority}
+                onValueChange={(value) => handleInputChange("priority", value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select priority level" />
+                </SelectTrigger>
+                <SelectContent>
+                  {priorities.map((priority) => (
+                    <SelectItem key={priority} value={priority}>
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle
+                          className={`h-3 w-3 ${
+                            priority === "HIGH"
+                              ? "text-red-500"
+                              : priority === "MEDIUM"
+                                ? "text-orange-500"
+                                : "text-green-500"
+                          }`}
+                        />
+                        {formatStatus(priority)}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             {/* Department Selection */}
             <div className="space-y-2">
               <Label htmlFor="department">
@@ -375,39 +409,6 @@ export const EditTicketModal: React.FC<EditTicketModalProps> = ({
                 </Select>
               </div>
             )}
-
-            {/* Priority Selection */}
-            <div className="space-y-2">
-              <Label htmlFor="priority">
-                Priority <span className="text-red-500">*</span>
-              </Label>
-              <Select
-                value={formData.priority}
-                onValueChange={(value) => handleInputChange("priority", value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select priority level" />
-                </SelectTrigger>
-                <SelectContent>
-                  {priorities.map((priority) => (
-                    <SelectItem key={priority} value={priority}>
-                      <div className="flex items-center gap-2">
-                        <AlertTriangle
-                          className={`h-3 w-3 ${
-                            priority === "HIGH"
-                              ? "text-red-500"
-                              : priority === "MEDIUM"
-                                ? "text-orange-500"
-                                : "text-green-500"
-                          }`}
-                        />
-                        {formatStatus(priority)}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
 
             {/* Status Selection - Only for Managers */}
             {isManager && !myTickets && (
