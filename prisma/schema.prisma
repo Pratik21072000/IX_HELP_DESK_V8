@@ -36,6 +36,7 @@ model Ticket {
   category    String?
   subcategory String?
   comment     String?
+  attachments String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

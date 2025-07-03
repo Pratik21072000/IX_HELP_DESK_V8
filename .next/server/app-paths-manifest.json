@@ -1,13 +1,10 @@
 {
-  "/api/auth/me/route": "app/api/auth/me/route.js",
-  "/api/tickets/route": "app/api/tickets/route.js",
-  "/api/dashboard/stats/route": "app/api/dashboard/stats/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/login/page": "app/login/page.js",
-  "/api/auth/logout/route": "app/api/auth/logout/route.js",
-  "/api/auth/login/route": "app/api/auth/login/route.js",
-  "/api/profile/route": "app/api/profile/route.js",
+  "/api/auth/me/route": "app/api/auth/me/route.js",
+  "/api/dashboard/stats/route": "app/api/dashboard/stats/route.js",
+  "/api/tickets/route": "app/api/tickets/route.js",
+  "/(protected)/dashboard/page": "app/(protected)/dashboard/page.js",
   "/(protected)/my-tickets/page": "app/(protected)/my-tickets/page.js",
-  "/(protected)/profile/page": "app/(protected)/profile/page.js",
-  "/(protected)/create-ticket/page": "app/(protected)/create-ticket/page.js",
-  "/(protected)/dashboard/page": "app/(protected)/dashboard/page.js"
+  "/(protected)/create-ticket/page": "app/(protected)/create-ticket/page.js"
 }

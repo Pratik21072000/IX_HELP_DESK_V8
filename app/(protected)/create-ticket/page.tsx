@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -43,6 +43,7 @@ const CreateTicketPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
 
   // Removed role restriction - all authenticated users can create tickets
 
@@ -96,20 +97,24 @@ const CreateTicketPage: React.FC = () => {
       if (!formData.priority) {
         throw new Error("Priority is required");
       }
+      if (files.length > 5) {
+        throw new Error("You can upload up to 5 files only");
+      }
+
+      const form: any = new FormData();
+      form.append("subject", formData.subject.trim());
+      form.append("description", formData.description.trim());
+      form.append("department", formData.department);
+      form.append("priority", formData.priority);
+      form.append("category", formData.category);
+      form.append("subcategory", formData.subcategory);
+      files.forEach((file) => {
+        form.append("files", file);
+      });
 
       const response = await fetch("/api/tickets", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          subject: formData.subject.trim(),
-          description: formData.description.trim(),
-          department: formData.department,
-          priority: formData.priority,
-          category: formData.category,
-          subcategory: formData.subcategory,
-        }),
+        body: form,
       });
 
       if (!response.ok) {
@@ -141,6 +146,7 @@ const CreateTicketPage: React.FC = () => {
 
   const departments: Department[] = ["ADMIN", "FINANCE", "HR"];
   const priorities: TicketPriority[] = ["LOW", "MEDIUM", "HIGH"];
+  const fileInputRef: any = useRef();
 
   if (submitSuccess) {
     return (
@@ -164,6 +170,8 @@ const CreateTicketPage: React.FC = () => {
       </div>
     );
   }
+
+  console.log(files);
 
   return (
     <div className="p-6">
@@ -213,6 +221,42 @@ const CreateTicketPage: React.FC = () => {
                   rows={4}
                   required
                 />
+              </div>
+
+              {/* Priority Selection */}
+              <div className="space-y-2">
+                <Label htmlFor="priority">
+                  Priority <span className="text-red-500">*</span>
+                </Label>
+                <Select
+                  value={formData.priority}
+                  onValueChange={(value) =>
+                    handleInputChange("priority", value)
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select priority level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {priorities.map((priority) => (
+                      <SelectItem key={priority} value={priority}>
+                        <div className="flex items-center gap-2">
+                          <AlertTriangle
+                            className={`h-3 w-3 ${
+                              priority === "HIGH"
+                                ? "text-red-500"
+                                : priority === "MEDIUM"
+                                  ? "text-orange-500"
+                                  : "text-green-500"
+                            }`}
+                          />
+                          {priority.charAt(0).toUpperCase() +
+                            priority.slice(1).toLowerCase()}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               {/* Department Selection */}
               <div className="space-y-2">
@@ -289,41 +333,72 @@ const CreateTicketPage: React.FC = () => {
                 </div>
               )}
 
-              {/* Priority Selection */}
-              <div className="space-y-2">
-                <Label htmlFor="priority">
-                  Priority <span className="text-red-500">*</span>
-                </Label>
-                <Select
-                  value={formData.priority}
-                  onValueChange={(value) =>
-                    handleInputChange("priority", value)
+              <Label htmlFor="files" className="mt-4 block">
+                Upload Files (max 5)
+              </Label>
+              <Input
+                ref={fileInputRef}
+                id="files"
+                type="file"
+                multiple
+                accept="image/*,application/pdf"
+                onChange={(e) => {
+                  const selectedFiles = Array.from(e.target.files || []);
+                  const allowedTypes = [
+                    "application/pdf",
+                    "image/jpeg",
+                    "image/jpg",
+                    "image/png",
+                  ];
+
+                  // Check for invalid file types
+                  const invalidFiles = selectedFiles.filter(
+                    (file) => !allowedTypes.includes(file.type),
+                  );
+
+                  if (invalidFiles.length > 0) {
+                    setError("Only PDF, JPEG, JPG, and PNG files are allowed.");
+                    return;
                   }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select priority level" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {priorities.map((priority) => (
-                      <SelectItem key={priority} value={priority}>
-                        <div className="flex items-center gap-2">
-                          <AlertTriangle
-                            className={`h-3 w-3 ${
-                              priority === "HIGH"
-                                ? "text-red-500"
-                                : priority === "MEDIUM"
-                                  ? "text-orange-500"
-                                  : "text-green-500"
-                            }`}
-                          />
-                          {priority.charAt(0).toUpperCase() +
-                            priority.slice(1).toLowerCase()}
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                  if (files.length >= 5) {
+                    setError("You can upload up to 5 files only.");
+                  } else {
+                    setError("");
+                    setFiles((prevState: any) => [
+                      ...prevState,
+                      ...selectedFiles,
+                    ]);
+                  }
+                }}
+              />
+              {files.length > 0 && (
+                <ul className="text-sm text-gray-600 mt-2 list-disc pl-5">
+                  {files.map((file, idx) => (
+                    <li key={idx}>
+                      {file.name}{" "}
+                      <button
+                        onClick={() => {
+                          if (files.length === 1) {
+                            setFiles([]);
+                            if (fileInputRef.current) {
+                              fileInputRef.current.value = "";
+                            }
+                          }
+                          setFiles((prevState: any) =>
+                            prevState.filter(
+                              (elem: any) => elem?.name !== file.name,
+                            ),
+                          );
+                        }}
+                        className="text-red-600 text-lg font-bold hover:text-red-800"
+                        title="Remove file"
+                      >
+                        ❌
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
 
               {/* Error Display */}
               {error && (

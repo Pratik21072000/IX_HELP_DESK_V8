@@ -50,6 +50,7 @@ export interface CreateTicketData {
   priority: TicketPriority;
   category?: string;
   subcategory?: string;
+  attachments: any;
 }
 
 export interface UpdateTicketData {

@@ -20,6 +20,8 @@ import {
   Edit,
 } from "lucide-react";
 import type { Ticket, TicketStatus } from "@/lib/types";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 interface TicketCardProps {
   ticket: Ticket;
@@ -242,6 +244,72 @@ export const TicketCard: React.FC<TicketCardProps> = ({
                 ))}
               </SelectContent>
             </Select>
+          </div>
+        )}
+
+        {ticket.attachments.length !== 0 && (
+          <div className="pt-2 border-t border-gray-100">
+            <span className="text-xs text-gray-600 mr-2">Attachments</span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={async () => {
+                const files = Array.isArray(ticket.attachments)
+                  ? ticket.attachments
+                  : JSON.parse(ticket.attachments);
+
+                const zip = new JSZip();
+                let added = 0;
+
+                for (let i = 0; i < files.length; i++) {
+                  const url = files[i];
+                  const fileName =
+                    url.split("/").pop()?.split("?")[0] || `file-${i}`;
+
+                  try {
+                    const response = await fetch(url);
+
+                    if (!response.ok) {
+                      console.warn(
+                        `⛔ Skipping ${fileName}: ${response.status}`,
+                      );
+                      continue;
+                    }
+
+                    const contentType =
+                      response.headers.get("Content-Type") || "";
+                    if (
+                      contentType.includes("html") ||
+                      contentType.includes("xml")
+                    ) {
+                      console.warn(`⛔ Skipping ${fileName}: HTML/XML`);
+                      continue;
+                    }
+
+                    const blob = await response.blob();
+                    if (!blob || blob.size === 0) {
+                      console.warn(`⛔ Skipping ${fileName}: empty blob`);
+                      continue;
+                    }
+
+                    zip.file(fileName, blob);
+                    added++;
+                  } catch (err) {
+                    console.error(`❌ Failed to fetch ${fileName}`, err);
+                  }
+                }
+
+                if (added === 0) {
+                  alert("❌ No valid files to zip. All were skipped.");
+                  return;
+                }
+
+                const zipBlob = await zip.generateAsync({ type: "blob" });
+                saveAs(zipBlob, "attachments.zip");
+              }}
+            >
+              DOWNLOAD FILES
+            </Button>
           </div>
         )}
       </CardContent>
